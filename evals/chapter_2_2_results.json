@@ -1,0 +1,179 @@
+{
+  "baseline": {
+    "total_queries": 30,
+    "execution_accuracy": 0.5666666666666667,
+    "result_accuracy": 0.4666666666666667,
+    "latency_p50_ms": 2475.3323178738356,
+    "latency_p95_ms": 4300.161256920546,
+    "latency_mean_ms": 3536.261806140343,
+    "by_category": {
+      "count": 1.0,
+      "filter": 1.0,
+      "join": 0.3333333333333333,
+      "group": 0.6666666666666666,
+      "order": 1.0,
+      "sum": 0.0,
+      "date": 0.0,
+      "complex": 0.0,
+      "negative": 0.0
+    },
+    "by_difficulty": {
+      "easy": 0.5714285714285714,
+      "medium": 0.5,
+      "hard": 0.0
+    },
+    "by_category_detailed": {
+      "count": {
+        "total": 5,
+        "executed": 5,
+        "matched": 5
+      },
+      "filter": {
+        "total": 3,
+        "executed": 3,
+        "matched": 3
+      },
+      "join": {
+        "total": 3,
+        "executed": 1,
+        "matched": 1
+      },
+      "group": {
+        "total": 3,
+        "executed": 2,
+        "matched": 2
+      },
+      "order": {
+        "total": 3,
+        "executed": 3,
+        "matched": 3
+      },
+      "sum": {
+        "total": 2,
+        "executed": 1,
+        "matched": 0
+      },
+      "date": {
+        "total": 2,
+        "executed": 0,
+        "matched": 0
+      },
+      "complex": {
+        "total": 4,
+        "executed": 1,
+        "matched": 0
+      },
+      "negative": {
+        "total": 5,
+        "executed": 1,
+        "matched": 0
+      }
+    },
+    "by_difficulty_detailed": {
+      "easy": {
+        "total": 14,
+        "executed": 10,
+        "matched": 8
+      },
+      "medium": {
+        "total": 12,
+        "executed": 6,
+        "matched": 6
+      },
+      "hard": {
+        "total": 4,
+        "executed": 1,
+        "matched": 0
+      }
+    }
+  },
+  "with_schema": {
+    "total_queries": 30,
+    "execution_accuracy": 0.9666666666666667,
+    "result_accuracy": 0.5666666666666667,
+    "latency_p50_ms": 2357.444650027901,
+    "latency_p95_ms": 3627.8366139158607,
+    "latency_mean_ms": 2457.892613601871,
+    "by_category": {
+      "count": 1.0,
+      "filter": 0.6666666666666666,
+      "join": 1.0,
+      "group": 0.6666666666666666,
+      "order": 1.0,
+      "sum": 0.5,
+      "date": 0.5,
+      "complex": 0.0,
+      "negative": 0.0
+    },
+    "by_difficulty": {
+      "easy": 0.7142857142857143,
+      "medium": 0.5833333333333334,
+      "hard": 0.0
+    },
+    "by_category_detailed": {
+      "count": {
+        "total": 5,
+        "executed": 5,
+        "matched": 5
+      },
+      "filter": {
+        "total": 3,
+        "executed": 3,
+        "matched": 2
+      },
+      "join": {
+        "total": 3,
+        "executed": 3,
+        "matched": 3
+      },
+      "group": {
+        "total": 3,
+        "executed": 3,
+        "matched": 2
+      },
+      "order": {
+        "total": 3,
+        "executed": 3,
+        "matched": 3
+      },
+      "sum": {
+        "total": 2,
+        "executed": 2,
+        "matched": 1
+      },
+      "date": {
+        "total": 2,
+        "executed": 2,
+        "matched": 1
+      },
+      "complex": {
+        "total": 4,
+        "executed": 4,
+        "matched": 0
+      },
+      "negative": {
+        "total": 5,
+        "executed": 4,
+        "matched": 0
+      }
+    },
+    "by_difficulty_detailed": {
+      "easy": {
+        "total": 14,
+        "executed": 13,
+        "matched": 10
+      },
+      "medium": {
+        "total": 12,
+        "executed": 12,
+        "matched": 7
+      },
+      "hard": {
+        "total": 4,
+        "executed": 4,
+        "matched": 0
+      }
+    }
+  },
+  "improvement": 0.09999999999999998
+}

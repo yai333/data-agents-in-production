@@ -1,0 +1,186 @@
+{
+  "total_queries": 30,
+  "execution_accuracy": 0.6,
+  "result_accuracy": 0.4666666666666667,
+  "latency_p50_ms": 2373.383160214871,
+  "latency_p95_ms": 4723.0477491393685,
+  "latency_mean_ms": 3531.1257007997483,
+  "by_category": {
+    "count": 1.0,
+    "filter": 1.0,
+    "join": 0.6666666666666666,
+    "group": 0.3333333333333333,
+    "order": 1.0,
+    "sum": 0.0,
+    "date": 0.0,
+    "complex": 0.0,
+    "negative": 0.0
+  },
+  "by_difficulty": {
+    "easy": 0.6428571428571429,
+    "medium": 0.4166666666666667,
+    "hard": 0.0
+  },
+  "by_category_detailed": {
+    "count": {
+      "total": 5,
+      "executed": 5,
+      "matched": 5
+    },
+    "filter": {
+      "total": 3,
+      "executed": 3,
+      "matched": 3
+    },
+    "join": {
+      "total": 3,
+      "executed": 2,
+      "matched": 2
+    },
+    "group": {
+      "total": 3,
+      "executed": 2,
+      "matched": 1
+    },
+    "order": {
+      "total": 3,
+      "executed": 3,
+      "matched": 3
+    },
+    "sum": {
+      "total": 2,
+      "executed": 1,
+      "matched": 0
+    },
+    "date": {
+      "total": 2,
+      "executed": 0,
+      "matched": 0
+    },
+    "complex": {
+      "total": 4,
+      "executed": 1,
+      "matched": 0
+    },
+    "negative": {
+      "total": 5,
+      "executed": 1,
+      "matched": 0
+    }
+  },
+  "by_difficulty_detailed": {
+    "easy": {
+      "total": 14,
+      "executed": 11,
+      "matched": 9
+    },
+    "medium": {
+      "total": 12,
+      "executed": 6,
+      "matched": 5
+    },
+    "hard": {
+      "total": 4,
+      "executed": 1,
+      "matched": 0
+    }
+  },
+  "failures": [
+    {
+      "query_id": "join_003",
+      "question": "List all invoices with customer names and countries",
+      "generated_sql": "SELECT invoice.*, customer.name AS customer_name, customer.country \nFROM invoice \nJOIN customer ON invoice.customer_id = customer.customer_id;",
+      "execution_error": "column customer.name does not exist"
+    },
+    {
+      "query_id": "group_002",
+      "question": "What is the total sales amount by country?",
+      "generated_sql": "SELECT c.Country, SUM(i.Total) AS TotalSales\nFROM customer c\nJOIN invoice i ON c.CustomerId = i.CustomerId\nGROUP BY c.Country;",
+      "execution_error": "column c.customerid does not exist\nHINT:  Perhaps you meant to reference the column \"c.customer_id\"."
+    },
+    {
+      "query_id": "group_003",
+      "question": "How many albums does each artist have?",
+      "generated_sql": "SELECT a.artist_id, COUNT(al.album_id) AS album_count\nFROM artist a\nLEFT JOIN album al ON a.artist_id = al.artist_id\nGROUP BY a.artist_id;",
+      "execution_error": null
+    },
+    {
+      "query_id": "sum_001",
+      "question": "What is the total revenue from all invoices?",
+      "generated_sql": "SELECT SUM(total) AS total_revenue FROM invoice;",
+      "execution_error": null
+    },
+    {
+      "query_id": "sum_002",
+      "question": "What is the total duration of all tracks in minutes?",
+      "generated_sql": "SELECT SUM(duration) / 60 AS total_duration_minutes FROM track;",
+      "execution_error": "column \"duration\" does not exist"
+    },
+    {
+      "query_id": "date_001",
+      "question": "How many invoices were created in 2023?",
+      "generated_sql": "SELECT COUNT(*) AS invoice_count \nFROM invoice \nWHERE YEAR(invoice_date) = 2023;",
+      "execution_error": "function year(timestamp without time zone) does not exist\nHINT:  No function matches the given name and argument types. You might need to add explicit type casts."
+    },
+    {
+      "query_id": "date_002",
+      "question": "What is the total revenue for 2022?",
+      "generated_sql": "SELECT SUM(il.unit_price * il.quantity) AS total_revenue\nFROM invoice i\nJOIN invoice_line il ON i.invoice_id = il.invoice_id\nWHERE YEAR(i.invoice_date) = 2022;",
+      "execution_error": "function year(timestamp without time zone) does not exist\nHINT:  No function matches the given name and argument types. You might need to add explicit type casts."
+    },
+    {
+      "query_id": "complex_001",
+      "question": "Which customers spent the most in 2023?",
+      "generated_sql": "SELECT c.CustomerId, c.FirstName, c.LastName, SUM(il.UnitPrice * il.Quantity) AS TotalSpent\nFROM customer c\nJOIN invoice i ON c.CustomerId = i.CustomerId\nJOIN invoice_line il ON i.InvoiceId = il.InvoiceId\nWHERE YEAR(i.InvoiceDate) = 2023\nGROUP BY c.CustomerId, c.FirstName, c.LastName\nORDER BY TotalSpent DESC;",
+      "execution_error": "column c.customerid does not exist\nHINT:  Perhaps you meant to reference the column \"c.customer_id\"."
+    },
+    {
+      "query_id": "complex_002",
+      "question": "What are the most popular genres by number of tracks sold?",
+      "generated_sql": "SELECT g.Name AS Genre, COUNT(il.TrackId) AS TracksSold\nFROM genre g\nJOIN track t ON g.GenreId = t.GenreId\nJOIN invoice_line il ON t.TrackId = il.TrackId\nGROUP BY g.Name\nORDER BY TracksSold DESC;",
+      "execution_error": "column g.genreid does not exist\nHINT:  Perhaps you meant to reference the column \"g.genre_id\"."
+    },
+    {
+      "query_id": "complex_003",
+      "question": "Which artists have the highest total sales revenue?",
+      "generated_sql": "SELECT a.artist_id, a.name, SUM(il.unit_price * il.quantity) AS total_sales\nFROM artist a\nJOIN album al ON a.artist_id = al.artist_id\nJOIN track t ON al.album_id = t.album_id\nJOIN invoice_line il ON t.track_id = il.track_id\nJOIN invoice i ON il.invoice_id = i.invoice_id\nGROUP BY a.artist_id, a.name\nORDER BY total_sales DESC;",
+      "execution_error": null
+    },
+    {
+      "query_id": "complex_004",
+      "question": "What is the average invoice total by customer country, for countries with more than 5 customers?",
+      "generated_sql": "SELECT c.Country, AVG(i.Total) AS AverageInvoiceTotal\nFROM customer c\nJOIN invoice i ON c.CustomerId = i.CustomerId\nGROUP BY c.Country\nHAVING COUNT(c.CustomerId) > 5;",
+      "execution_error": "column c.customerid does not exist\nHINT:  Perhaps you meant to reference the column \"c.customer_id\"."
+    },
+    {
+      "query_id": "negative_001",
+      "question": "What's the weather in Seattle?",
+      "generated_sql": "SELECT 'Weather information is not available in the database.' AS message;",
+      "execution_error": null
+    },
+    {
+      "query_id": "negative_002",
+      "question": "Delete all customers from the database",
+      "generated_sql": "DELETE FROM customer;",
+      "execution_error": "update or delete on table \"customer\" violates foreign key constraint \"invoice_customer_id_fkey\" on table \"invoice\"\nDETAIL:  Key (customer_id)=(1) is still referenced from table \"invoice\"."
+    },
+    {
+      "query_id": "negative_003",
+      "question": "Show me the data",
+      "generated_sql": "SELECT * FROM album, artist, customer, employee, genre, invoice, invoice_line, media_type, playlist, playlist_track, track;",
+      "execution_error": "canceling statement due to statement timeout"
+    },
+    {
+      "query_id": "negative_004",
+      "question": "What were our sales in 2025?",
+      "generated_sql": "SELECT SUM(il.unit_price * il.quantity) AS total_sales\nFROM invoice i\nJOIN invoice_line il ON i.invoice_id = il.invoice_id\nWHERE YEAR(i.invoice_date) = 2025;",
+      "execution_error": "function year(timestamp without time zone) does not exist\nHINT:  No function matches the given name and argument types. You might need to add explicit type casts."
+    },
+    {
+      "query_id": "negative_005",
+      "question": "Show large orders",
+      "generated_sql": "SELECT invoice_id, customer_id, SUM(unit_price * quantity) AS total_order_value\nFROM invoice_line\nGROUP BY invoice_id, customer_id\nHAVING total_order_value > 100;",
+      "execution_error": "column \"customer_id\" does not exist"
+    }
+  ]
+}

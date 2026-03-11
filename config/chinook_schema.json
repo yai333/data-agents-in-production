@@ -1,0 +1,1295 @@
+{
+  "tables": [
+    {
+      "name": "album",
+      "description": "Music albums (records, releases). Each album belongs to one artist and contains multiple tracks.",
+      "columns": [
+        {
+          "name": "album_id",
+          "data_type": "INTEGER",
+          "description": "The column \"album_id\" represents a unique identifier for each album in the database.",
+          "nullable": false,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "title",
+          "data_type": "CHARACTER VARYING(160)",
+          "description": "The \"title\" column represents the names of music albums.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Heart of the Night",
+            "The Cream Of Clapton",
+            "Van Halen III"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "artist_id",
+          "data_type": "INTEGER",
+          "description": "The artist_id column represents a unique identifier for each artist associated with an album in the database.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": true,
+          "references": "artist.artist_id",
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        }
+      ],
+      "primary_key": [
+        "album_id"
+      ],
+      "relationships": [
+        {
+          "name": "album_artist",
+          "models": [
+            "album",
+            "artist"
+          ],
+          "join_type": "MANY_TO_ONE",
+          "condition": "album.artist_id = artist.artist_id"
+        },
+        {
+          "name": "album_track",
+          "models": [
+            "album",
+            "track"
+          ],
+          "join_type": "ONE_TO_MANY",
+          "condition": "album.album_id = track.album_id"
+        }
+      ],
+      "metrics": []
+    },
+    {
+      "name": "artist",
+      "description": "Musical artists, bands, and performers in the catalog.",
+      "columns": [
+        {
+          "name": "artist_id",
+          "data_type": "INTEGER",
+          "description": "The column \"artist_id\" represents a unique identifier for each artist in the database.",
+          "nullable": false,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "name",
+          "data_type": "CHARACTER VARYING(120)",
+          "description": "The \"name\" column represents the names of musical artists or bands.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Legião Urbana",
+            "Ben Harper",
+            "Incognito"
+          ],
+          "business_rules": null
+        }
+      ],
+      "primary_key": [
+        "artist_id"
+      ],
+      "relationships": [
+        {
+          "name": "artist_album",
+          "models": [
+            "artist",
+            "album"
+          ],
+          "join_type": "ONE_TO_MANY",
+          "condition": "artist.artist_id = album.artist_id"
+        }
+      ],
+      "metrics": []
+    },
+    {
+      "name": "customer",
+      "description": "Customers (buyers, accounts) who purchase music. Includes contact info, address, country. Can be assigned to a support rep employee.",
+      "columns": [
+        {
+          "name": "customer_id",
+          "data_type": "INTEGER",
+          "description": "The \"customer_id\" column represents a unique identifier assigned to each customer in the database.",
+          "nullable": false,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "first_name",
+          "data_type": "CHARACTER VARYING(40)",
+          "description": "The \"first_name\" column represents the given names of customers, allowing for variable-length character entries up to 40 characters.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Martha",
+            "Edward",
+            "Victor"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "last_name",
+          "data_type": "CHARACTER VARYING(20)",
+          "description": "The \"last_name\" column represents the family or surname of customers, allowing for a maximum of 20 characters.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Sampaio",
+            "Muñoz",
+            "Wójcik"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "company",
+          "data_type": "CHARACTER VARYING(80)",
+          "description": "The \"company\" column represents the names of businesses or organizations associated with each customer.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Apple Inc.",
+            "Telus",
+            "Embraer - Empresa Brasileira de Aeronáutica S.A."
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "address",
+          "data_type": "CHARACTER VARYING(70)",
+          "description": "The \"address\" column represents the residential or business locations of customers, formatted as variable-length strings.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "202 Hoxton Street",
+            "3,Raj Bhavan Road",
+            "Rua dos Campeões Europeus de Viena, 4350"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "city",
+          "data_type": "CHARACTER VARYING(40)",
+          "description": "The \"city\" column represents the names of cities where customers reside.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Budapest",
+            "Porto",
+            "Reno"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "state",
+          "data_type": "CHARACTER VARYING(40)",
+          "description": "The \"state\" column represents the abbreviated designations of geographical regions or states associated with customers.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "SP",
+            "RM",
+            "CA"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "country",
+          "data_type": "CHARACTER VARYING(40)",
+          "description": "The \"country\" column represents the country of residence for each customer, storing names of countries as variable-length strings.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Argentina",
+            "Spain",
+            "Italy"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "postal_code",
+          "data_type": "CHARACTER VARYING(10)",
+          "description": "The \"postal_code\" column represents the mailing codes used to identify specific geographic areas for customer addresses, accommodating various formats including alphanumeric and numeric codes.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "K2P 1L7",
+            "X1A 1N6",
+            "110017"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "phone",
+          "data_type": "CHARACTER VARYING(24)",
+          "description": "The \"phone\" column represents the contact telephone numbers of customers, formatted to include international dialing codes and varying local formats.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "+1 (617) 522-1333",
+            "+91 0124 39883988",
+            "+55 (21) 2271-7000"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "fax",
+          "data_type": "CHARACTER VARYING(24)",
+          "description": "The \"fax\" column represents the fax numbers of customers, formatted with international dialing codes and varying styles.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "+1 (780) 434-5565",
+            "+1 (408) 996-1011",
+            "+55 (21) 2271-7070"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "email",
+          "data_type": "CHARACTER VARYING(60)",
+          "description": "The \"email\" column represents the email addresses of customers, used for communication and account identification.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "ladislav_kovacs@apple.hu",
+            "johngordon22@yahoo.com",
+            "enrique_munoz@yahoo.es"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "support_rep_id",
+          "data_type": "INTEGER",
+          "description": "The `support_rep_id` column represents the unique identifier for the customer support representative assigned to assist each customer.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": true,
+          "references": "employee.employee_id",
+          "examples": [
+            "3",
+            "5",
+            "4"
+          ],
+          "business_rules": "Internal customers have support_rep_id IS NOT NULL"
+        }
+      ],
+      "primary_key": [
+        "customer_id"
+      ],
+      "relationships": [
+        {
+          "name": "customer_invoice",
+          "models": [
+            "customer",
+            "invoice"
+          ],
+          "join_type": "ONE_TO_MANY",
+          "condition": "customer.customer_id = invoice.customer_id"
+        },
+        {
+          "name": "customer_employee",
+          "models": [
+            "customer",
+            "employee"
+          ],
+          "join_type": "MANY_TO_ONE",
+          "condition": "customer.support_rep_id = employee.employee_id"
+        }
+      ],
+      "metrics": []
+    },
+    {
+      "name": "employee",
+      "description": "Company employees (staff). Some are support reps (agents) assigned to customers. Includes hire date, title, manager (reports_to).",
+      "columns": [
+        {
+          "name": "employee_id",
+          "data_type": "INTEGER",
+          "description": "The \"employee_id\" column represents a unique identifier assigned to each employee in the database.",
+          "nullable": false,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "last_name",
+          "data_type": "CHARACTER VARYING(20)",
+          "description": "The \"last_name\" column represents the family names of employees in the organization.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Adams",
+            "King",
+            "Johnson"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "first_name",
+          "data_type": "CHARACTER VARYING(20)",
+          "description": "The \"first_name\" column represents the given names of employees, limited to a maximum of 20 characters.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Nancy",
+            "Jane",
+            "Laura"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "title",
+          "data_type": "CHARACTER VARYING(30)",
+          "description": "The \"title\" column represents the job positions or roles held by employees within the organization.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "General Manager",
+            "Sales Support Agent",
+            "IT Manager"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "reports_to",
+          "data_type": "INTEGER",
+          "description": "The \"reports_to\" column represents the employee ID of the supervisor or manager to whom the employee directly reports.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": true,
+          "references": "employee.employee_id",
+          "examples": [
+            "1",
+            "2",
+            "6"
+          ],
+          "business_rules": "NULL for top-level managers"
+        },
+        {
+          "name": "birth_date",
+          "data_type": "TIMESTAMP WITHOUT TIME ZONE",
+          "description": "The \"birth_date\" column represents the date and time of birth for each employee, stored as a timestamp without time zone information.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1958-12-08 00:00:00",
+            "1962-02-18 00:00:00",
+            "1973-08-29 00:00:00"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "hire_date",
+          "data_type": "TIMESTAMP WITHOUT TIME ZONE",
+          "description": "The \"hire_date\" column represents the date and time when each employee was hired, recorded as a timestamp without time zone information.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "2002-08-14 00:00:00",
+            "2002-04-01 00:00:00",
+            "2003-10-17 00:00:00"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "address",
+          "data_type": "CHARACTER VARYING(70)",
+          "description": "The \"address\" column represents the residential or work location of employees, formatted as variable-length strings containing street addresses.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "5827 Bowness Road NW",
+            "825 8 Ave SW",
+            "1111 6 Ave SW"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "city",
+          "data_type": "CHARACTER VARYING(40)",
+          "description": "The \"city\" column represents the names of cities where employees are located or reside.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Lethbridge",
+            "Edmonton",
+            "Calgary"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "state",
+          "data_type": "CHARACTER VARYING(40)",
+          "description": "The \"state\" column represents the abbreviation of the U.S. state where the employee is located or registered, as indicated by the sample value 'AB'.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "AB"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "country",
+          "data_type": "CHARACTER VARYING(40)",
+          "description": "The \"country\" column represents the country of residence or employment for each employee, stored as a variable-length string.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Canada"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "postal_code",
+          "data_type": "CHARACTER VARYING(10)",
+          "description": "The \"postal_code\" column represents the postal codes of employees' addresses, formatted according to Canadian postal code standards.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "T2P 5M5",
+            "T3B 1Y7",
+            "T1K 5N8"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "phone",
+          "data_type": "CHARACTER VARYING(24)",
+          "description": "The \"phone\" column represents the contact telephone numbers of employees, formatted to include country codes and area codes.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "+1 (403) 467-3351",
+            "1 (780) 836-9987",
+            "+1 (780) 428-9482"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "fax",
+          "data_type": "CHARACTER VARYING(24)",
+          "description": "The \"fax\" column represents the fax numbers of employees, formatted as strings that may include country codes and area codes.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "+1 (403) 456-8485",
+            "1 (780) 836-9543",
+            "+1 (403) 263-4289"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "email",
+          "data_type": "CHARACTER VARYING(60)",
+          "description": "The \"email\" column represents the email addresses of employees within the organization.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "michael@chinookcorp.com",
+            "robert@chinookcorp.com",
+            "margaret@chinookcorp.com"
+          ],
+          "business_rules": null
+        }
+      ],
+      "primary_key": [
+        "employee_id"
+      ],
+      "relationships": [
+        {
+          "name": "employee_manager",
+          "models": [
+            "employee",
+            "employee"
+          ],
+          "join_type": "MANY_TO_ONE",
+          "condition": "employee.reports_to = manager.employee_id"
+        },
+        {
+          "name": "employee_customer",
+          "models": [
+            "employee",
+            "customer"
+          ],
+          "join_type": "ONE_TO_MANY",
+          "condition": "employee.employee_id = customer.support_rep_id"
+        }
+      ],
+      "metrics": []
+    },
+    {
+      "name": "genre",
+      "description": "Music genre classifications (Rock, Jazz, Classical, etc.).",
+      "columns": [
+        {
+          "name": "genre_id",
+          "data_type": "INTEGER",
+          "description": "The column \"genre_id\" represents a unique identifier for each genre in the database.",
+          "nullable": false,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "name",
+          "data_type": "CHARACTER VARYING(120)",
+          "description": "The \"name\" column represents the various genres of music and entertainment, categorizing them by their specific styles or themes.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Heavy Metal",
+            "TV Shows",
+            "Latin"
+          ],
+          "business_rules": null
+        }
+      ],
+      "primary_key": [
+        "genre_id"
+      ],
+      "relationships": [
+        {
+          "name": "genre_track",
+          "models": [
+            "genre",
+            "track"
+          ],
+          "join_type": "ONE_TO_MANY",
+          "condition": "genre.genre_id = track.genre_id"
+        }
+      ],
+      "metrics": []
+    },
+    {
+      "name": "invoice",
+      "description": "Sales invoices (orders, transactions, purchases). Contains total amount, billing address, and date. Use with invoice_line for revenue, spending, and sales analysis.",
+      "columns": [
+        {
+          "name": "invoice_id",
+          "data_type": "INTEGER",
+          "description": "The `invoice_id` column represents a unique identifier for each invoice in the database.",
+          "nullable": false,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "customer_id",
+          "data_type": "INTEGER",
+          "description": "The \"customer_id\" column represents a unique identifier for each customer associated with an invoice.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": true,
+          "references": "customer.customer_id",
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "invoice_date",
+          "data_type": "TIMESTAMP WITHOUT TIME ZONE",
+          "description": "The `invoice_date` column represents the date and time when each invoice was issued, recorded as a timestamp without time zone information.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "2023-07-30 00:00:00",
+            "2022-02-09 00:00:00",
+            "2024-08-28 00:00:00"
+          ],
+          "business_rules": "Dates range from 2009 to 2013. Fiscal year is Jan-Dec."
+        },
+        {
+          "name": "billing_address",
+          "data_type": "CHARACTER VARYING(70)",
+          "description": "The \"billing_address\" column represents the physical addresses where invoices are sent for billing purposes.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "202 Hoxton Street",
+            "Rua dos Campeões Europeus de Viena, 4350",
+            "3,Raj Bhavan Road"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "billing_city",
+          "data_type": "CHARACTER VARYING(40)",
+          "description": "The `billing_city` column represents the names of cities where customers are billed for their invoices.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Porto",
+            "Budapest",
+            "Reno"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "billing_state",
+          "data_type": "CHARACTER VARYING(40)",
+          "description": "The \"billing_state\" column represents the abbreviated state or province codes associated with the billing address of an invoice.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "SP",
+            "RM",
+            "CA"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "billing_country",
+          "data_type": "CHARACTER VARYING(40)",
+          "description": "The \"billing_country\" column represents the country associated with the billing address for each invoice.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Argentina",
+            "Spain",
+            "Italy"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "billing_postal_code",
+          "data_type": "CHARACTER VARYING(10)",
+          "description": "The `billing_postal_code` column represents the postal or ZIP codes associated with billing addresses for invoices, accommodating various formats from different regions.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "K2P 1L7",
+            "X1A 1N6",
+            "110017"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "total",
+          "data_type": "NUMERIC",
+          "description": "The \"total\" column represents the total monetary amount of each invoice, expressed as a numeric value.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "8.94",
+            "9.91",
+            "15.86"
+          ],
+          "business_rules": "Sum of (unit_price * quantity) from invoice_line items"
+        }
+      ],
+      "primary_key": [
+        "invoice_id"
+      ],
+      "relationships": [
+        {
+          "name": "invoice_customer",
+          "models": [
+            "invoice",
+            "customer"
+          ],
+          "join_type": "MANY_TO_ONE",
+          "condition": "invoice.customer_id = customer.customer_id"
+        },
+        {
+          "name": "invoice_invoice_line",
+          "models": [
+            "invoice",
+            "invoice_line"
+          ],
+          "join_type": "ONE_TO_MANY",
+          "condition": "invoice.invoice_id = invoice_line.invoice_id"
+        }
+      ],
+      "metrics": [
+        {
+          "name": "revenue",
+          "description": "Total sales revenue",
+          "sql_pattern": "SUM(total)",
+          "default_aggregation": "GROUP BY period",
+          "default_limit": null
+        },
+        {
+          "name": "order_count",
+          "description": "Number of invoices",
+          "sql_pattern": "COUNT(invoice_id)",
+          "default_aggregation": null,
+          "default_limit": null
+        }
+      ]
+    },
+    {
+      "name": "invoice_line",
+      "description": "Line items for invoices. Each row is a track purchase with unit_price and quantity. Join to invoice for revenue, sales totals, and spending by customer or region.",
+      "columns": [
+        {
+          "name": "invoice_line_id",
+          "data_type": "INTEGER",
+          "description": "The `invoice_line_id` column represents a unique identifier for each line item in an invoice.",
+          "nullable": false,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "invoice_id",
+          "data_type": "INTEGER",
+          "description": "The \"invoice_id\" column represents a unique identifier for each invoice associated with the corresponding line items in the invoice_line table.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": true,
+          "references": "invoice.invoice_id",
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "track_id",
+          "data_type": "INTEGER",
+          "description": "The \"track_id\" column represents a unique identifier for each music track associated with an invoice line item.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": true,
+          "references": "track.track_id",
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "unit_price",
+          "data_type": "NUMERIC",
+          "description": "The \"unit_price\" column represents the price per individual unit of a product or service listed in an invoice line, expressed as a numeric value.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1.99",
+            "0.99"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "quantity",
+          "data_type": "INTEGER",
+          "description": "The \"quantity\" column represents the number of units of a specific item included in an invoice line.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1"
+          ],
+          "business_rules": null
+        }
+      ],
+      "primary_key": [
+        "invoice_line_id"
+      ],
+      "relationships": [
+        {
+          "name": "invoice_line_invoice",
+          "models": [
+            "invoice_line",
+            "invoice"
+          ],
+          "join_type": "MANY_TO_ONE",
+          "condition": "invoice_line.invoice_id = invoice.invoice_id"
+        },
+        {
+          "name": "invoice_line_track",
+          "models": [
+            "invoice_line",
+            "track"
+          ],
+          "join_type": "MANY_TO_ONE",
+          "condition": "invoice_line.track_id = track.track_id"
+        }
+      ],
+      "metrics": []
+    },
+    {
+      "name": "media_type",
+      "description": "Audio file formats and encoding types (MPEG, AAC, Protected AAC, etc.).",
+      "columns": [
+        {
+          "name": "media_type_id",
+          "data_type": "INTEGER",
+          "description": "The `media_type_id` column represents a unique identifier for different types of media in the database.",
+          "nullable": false,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "name",
+          "data_type": "CHARACTER VARYING(120)",
+          "description": "The \"name\" column represents the various types of media files, specifying their format and any associated attributes such as protection or purchase status.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "AAC audio file",
+            "Protected MPEG-4 video file",
+            "MPEG audio file"
+          ],
+          "business_rules": null
+        }
+      ],
+      "primary_key": [
+        "media_type_id"
+      ],
+      "relationships": [
+        {
+          "name": "media_type_track",
+          "models": [
+            "media_type",
+            "track"
+          ],
+          "join_type": "ONE_TO_MANY",
+          "condition": "media_type.media_type_id = track.media_type_id"
+        }
+      ],
+      "metrics": []
+    },
+    {
+      "name": "playlist",
+      "description": "User-created playlists (collections, mixtapes) grouping tracks together.",
+      "columns": [
+        {
+          "name": "playlist_id",
+          "data_type": "INTEGER",
+          "description": "The `playlist_id` column represents a unique identifier for each playlist in the database.",
+          "nullable": false,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "name",
+          "data_type": "CHARACTER VARYING(120)",
+          "description": "The \"name\" column represents the titles or categories of playlists, indicating the type of content they contain, such as TV shows, movies, or music.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "TV Shows",
+            "Movies",
+            "Music Videos"
+          ],
+          "business_rules": null
+        }
+      ],
+      "primary_key": [
+        "playlist_id"
+      ],
+      "relationships": [
+        {
+          "name": "playlist_playlist_track",
+          "models": [
+            "playlist",
+            "playlist_track"
+          ],
+          "join_type": "ONE_TO_MANY",
+          "condition": "playlist.playlist_id = playlist_track.playlist_id"
+        }
+      ],
+      "metrics": []
+    },
+    {
+      "name": "playlist_track",
+      "description": "Junction table linking playlists to tracks. Many-to-many: a track can appear in multiple playlists.",
+      "columns": [
+        {
+          "name": "playlist_id",
+          "data_type": "INTEGER",
+          "description": "The `playlist_id` column represents the unique identifier for each playlist to which a track belongs.",
+          "nullable": false,
+          "is_primary_key": true,
+          "is_foreign_key": true,
+          "references": "playlist.playlist_id",
+          "examples": [
+            "5",
+            "18",
+            "16"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "track_id",
+          "data_type": "INTEGER",
+          "description": "The column \"track_id\" represents a unique identifier for each track in the playlist, with values indicating the specific tracks associated with the playlist.",
+          "nullable": false,
+          "is_primary_key": true,
+          "is_foreign_key": true,
+          "references": "track.track_id",
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        }
+      ],
+      "primary_key": [
+        "track_id",
+        "playlist_id"
+      ],
+      "relationships": [
+        {
+          "name": "playlist_track_playlist",
+          "models": [
+            "playlist_track",
+            "playlist"
+          ],
+          "join_type": "MANY_TO_ONE",
+          "condition": "playlist_track.playlist_id = playlist.playlist_id"
+        },
+        {
+          "name": "playlist_track_track",
+          "models": [
+            "playlist_track",
+            "track"
+          ],
+          "join_type": "MANY_TO_ONE",
+          "condition": "playlist_track.track_id = track.track_id"
+        }
+      ],
+      "metrics": []
+    },
+    {
+      "name": "track",
+      "description": "Individual songs (tracks, recordings). Includes name, duration (milliseconds), size (bytes), unit_price, composer. Belongs to an album, genre, and media_type.",
+      "columns": [
+        {
+          "name": "track_id",
+          "data_type": "INTEGER",
+          "description": "The column \"track_id\" represents a unique identifier for each track in the database.",
+          "nullable": false,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "name",
+          "data_type": "CHARACTER VARYING(200)",
+          "description": "The \"name\" column represents the titles of music tracks in the database.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Anyway, Anyhow, Anywhere",
+            "Não Sou Mais Disso",
+            "I Still Haven't Found What I'm Looking for"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "album_id",
+          "data_type": "INTEGER",
+          "description": "The album_id column represents the unique identifier for the album to which each track belongs.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": true,
+          "references": "album.album_id",
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "media_type_id",
+          "data_type": "INTEGER",
+          "description": "The `media_type_id` column represents the unique identifier for different types of media associated with each track, such as audio files or video files.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": true,
+          "references": "media_type.media_type_id",
+          "examples": [
+            "1",
+            "3",
+            "5"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "genre_id",
+          "data_type": "INTEGER",
+          "description": "The `genre_id` column represents a unique identifier for different music genres associated with each track in the database.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": true,
+          "references": "genre.genre_id",
+          "examples": [
+            "1",
+            "2",
+            "3"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "composer",
+          "data_type": "CHARACTER VARYING(220)",
+          "description": "The \"composer\" column represents the names of individuals or groups who composed the musical tracks, with multiple composers listed for some entries.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "Aldir Blanc/Jayme Vignoli",
+            "Alex Van Halen/David Lee Roth/Edward Van Halen/Michael Anthony",
+            "Grazielle/Roque Ferreira"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "milliseconds",
+          "data_type": "INTEGER",
+          "description": "The \"milliseconds\" column represents the duration of each track in milliseconds.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "407980",
+            "264829",
+            "464039"
+          ],
+          "business_rules": "5 minutes = 300,000 milliseconds"
+        },
+        {
+          "name": "bytes",
+          "data_type": "INTEGER",
+          "description": "The \"bytes\" column represents the size of each track in bytes.",
+          "nullable": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "7366142",
+            "8044864",
+            "7032960"
+          ],
+          "business_rules": null
+        },
+        {
+          "name": "unit_price",
+          "data_type": "NUMERIC",
+          "description": "The \"unit_price\" column represents the price of a single unit of a track, expressed as a numeric value.",
+          "nullable": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "references": null,
+          "examples": [
+            "1.99",
+            "0.99"
+          ],
+          "business_rules": "Standard price 0.99, premium/long tracks 1.99"
+        }
+      ],
+      "primary_key": [
+        "track_id"
+      ],
+      "relationships": [
+        {
+          "name": "track_album",
+          "models": [
+            "track",
+            "album"
+          ],
+          "join_type": "MANY_TO_ONE",
+          "condition": "track.album_id = album.album_id"
+        },
+        {
+          "name": "track_genre",
+          "models": [
+            "track",
+            "genre"
+          ],
+          "join_type": "MANY_TO_ONE",
+          "condition": "track.genre_id = genre.genre_id"
+        },
+        {
+          "name": "track_invoice_line",
+          "models": [
+            "track",
+            "invoice_line"
+          ],
+          "join_type": "ONE_TO_MANY",
+          "condition": "track.track_id = invoice_line.track_id"
+        }
+      ],
+      "metrics": [
+        {
+          "name": "track_count",
+          "description": "Number of tracks",
+          "sql_pattern": "COUNT(track_id)",
+          "default_aggregation": null,
+          "default_limit": null
+        }
+      ]
+    }
+  ],
+  "glossary": {
+    "churn": "Customer with no invoice in last 90 days",
+    "active": "Customer with at least one invoice in last 90 days",
+    "revenue": "Sum of invoice totals (calculated from invoice.total)"
+  },
+  "additional_descriptions": [
+    "Fiscal year runs January to December. Q1=Jan-Mar, Q2=Apr-Jun, Q3=Jul-Sep, Q4=Oct-Dec.",
+    "'Recent' means last 30 days. 'Last month' means previous calendar month.",
+    "'Top' without a number means top 10. 'Top performers' uses revenue ranking.",
+    "A customer is 'active' if they have an invoice in the last 90 days.",
+    "Sales regions are based on billing_country in the invoice table."
+  ]
+}

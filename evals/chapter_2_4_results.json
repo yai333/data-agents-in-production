@@ -1,0 +1,9 @@
+{
+  "structured": {
+    "mode": "structured",
+    "total": 30,
+    "parse_success_rate": 1.0,
+    "execute_success_rate": 0.9333333333333333,
+    "avg_confidence": 0.91
+  }
+}

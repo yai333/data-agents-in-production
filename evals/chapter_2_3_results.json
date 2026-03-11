@@ -1,0 +1,203 @@
+{
+  "retrieval_quality": {
+    "mrr": 0.8166666666666667,
+    "precision_at_5": 0.47333333333333333,
+    "coverage": 0.8333333333333334
+  },
+  "sql_generation": {
+    "schema_only": {
+      "total_queries": 30,
+      "execution_accuracy": 0.9666666666666667,
+      "result_accuracy": 0.6,
+      "latency_p50_ms": 2297.9588909074664,
+      "latency_p95_ms": 24891.738635022193,
+      "latency_mean_ms": 6432.970663020387,
+      "by_category": {
+        "count": 1.0,
+        "filter": 1.0,
+        "join": 1.0,
+        "group": 0.6666666666666666,
+        "order": 1.0,
+        "sum": 0.5,
+        "date": 0.5,
+        "complex": 0.0,
+        "negative": 0.0
+      },
+      "by_difficulty": {
+        "easy": 0.7142857142857143,
+        "medium": 0.6666666666666666,
+        "hard": 0.0
+      },
+      "by_category_detailed": {
+        "count": {
+          "total": 5,
+          "executed": 5,
+          "matched": 5
+        },
+        "filter": {
+          "total": 3,
+          "executed": 3,
+          "matched": 3
+        },
+        "join": {
+          "total": 3,
+          "executed": 3,
+          "matched": 3
+        },
+        "group": {
+          "total": 3,
+          "executed": 3,
+          "matched": 2
+        },
+        "order": {
+          "total": 3,
+          "executed": 3,
+          "matched": 3
+        },
+        "sum": {
+          "total": 2,
+          "executed": 2,
+          "matched": 1
+        },
+        "date": {
+          "total": 2,
+          "executed": 2,
+          "matched": 1
+        },
+        "complex": {
+          "total": 4,
+          "executed": 4,
+          "matched": 0
+        },
+        "negative": {
+          "total": 5,
+          "executed": 4,
+          "matched": 0
+        }
+      },
+      "by_difficulty_detailed": {
+        "easy": {
+          "total": 14,
+          "executed": 13,
+          "matched": 10
+        },
+        "medium": {
+          "total": 12,
+          "executed": 12,
+          "matched": 8
+        },
+        "hard": {
+          "total": 4,
+          "executed": 4,
+          "matched": 0
+        }
+      }
+    },
+    "with_retrieval": {
+      "total_queries": 30,
+      "execution_accuracy": 0.9666666666666667,
+      "result_accuracy": 0.6333333333333333,
+      "latency_p50_ms": 2029.8575949855149,
+      "latency_p95_ms": 2796.5110018849373,
+      "latency_mean_ms": 2053.780838816116,
+      "by_category": {
+        "count": 1.0,
+        "filter": 1.0,
+        "join": 1.0,
+        "group": 1.0,
+        "order": 1.0,
+        "sum": 0.0,
+        "date": 0.5,
+        "complex": 0.25,
+        "negative": 0.0
+      },
+      "by_difficulty": {
+        "easy": 0.7142857142857143,
+        "medium": 0.6666666666666666,
+        "hard": 0.25
+      },
+      "by_category_detailed": {
+        "count": {
+          "total": 5,
+          "executed": 5,
+          "matched": 5
+        },
+        "filter": {
+          "total": 3,
+          "executed": 3,
+          "matched": 3
+        },
+        "join": {
+          "total": 3,
+          "executed": 3,
+          "matched": 3
+        },
+        "group": {
+          "total": 3,
+          "executed": 3,
+          "matched": 3
+        },
+        "order": {
+          "total": 3,
+          "executed": 3,
+          "matched": 3
+        },
+        "sum": {
+          "total": 2,
+          "executed": 2,
+          "matched": 0
+        },
+        "date": {
+          "total": 2,
+          "executed": 2,
+          "matched": 1
+        },
+        "complex": {
+          "total": 4,
+          "executed": 4,
+          "matched": 1
+        },
+        "negative": {
+          "total": 5,
+          "executed": 4,
+          "matched": 0
+        }
+      },
+      "by_difficulty_detailed": {
+        "easy": {
+          "total": 14,
+          "executed": 13,
+          "matched": 10
+        },
+        "medium": {
+          "total": 12,
+          "executed": 12,
+          "matched": 8
+        },
+        "hard": {
+          "total": 4,
+          "executed": 4,
+          "matched": 1
+        }
+      }
+    },
+    "improvement": 0.033333333333333326
+  },
+  "method_comparison": {
+    "BM25 Only": {
+      "mrr": 0.8,
+      "precision_at_5": 0.4733333333333334,
+      "coverage": 0.8333333333333334
+    },
+    "Semantic Only": {
+      "mrr": 0.8166666666666667,
+      "precision_at_5": 0.46,
+      "coverage": 0.8333333333333334
+    },
+    "Hybrid (RRF)": {
+      "mrr": 0.8166666666666667,
+      "precision_at_5": 0.47333333333333333,
+      "coverage": 0.8333333333333334
+    }
+  }
+}

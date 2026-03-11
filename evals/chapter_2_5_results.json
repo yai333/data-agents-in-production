@@ -1,0 +1,26 @@
+{
+  "direct": {
+    "method": "direct",
+    "total": 5,
+    "execute_success_rate": 1.0,
+    "avg_latency_ms": 2734.3499660491943,
+    "p95_latency_ms": 4194.854974746704,
+    "avg_confidence": 0.7
+  },
+  "cot": {
+    "method": "cot",
+    "total": 5,
+    "execute_success_rate": 1.0,
+    "avg_latency_ms": 9435.012340545654,
+    "p95_latency_ms": 11312.4520778656,
+    "avg_confidence": 0.8680000000000001
+  },
+  "agentic_cot": {
+    "method": "agentic_cot",
+    "total": 5,
+    "execute_success_rate": 1.0,
+    "avg_latency_ms": 8901.9127368927,
+    "p95_latency_ms": 9767.377853393555,
+    "avg_confidence": 0.8720000000000001
+  }
+}

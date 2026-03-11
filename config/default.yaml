@@ -1,0 +1,64 @@
+# =============================================================================
+# Default Configuration for Text-to-SQL Agent
+# =============================================================================
+# Override with environment variables or chapter-specific configs
+
+# LLM Provider Settings
+llm:
+  provider: ${LLM_PROVIDER:openai}  # openai or gemini
+  model: ${LLM_MODEL:gpt-4o-mini}
+  temperature: 0.0  # Deterministic for SQL generation
+  max_tokens: 4096
+
+# Database Settings
+database:
+  url: ${CHINOOK_DATABASE_URL:postgresql://postgres:postgres@localhost:5432/chinook}
+  pool_size: 5
+  max_overflow: 10
+
+# Safety Settings
+safety:
+  max_result_rows: ${MAX_RESULT_ROWS:1000}
+  query_timeout_seconds: ${QUERY_TIMEOUT_SECONDS:30}
+  pii_detection_enabled: ${PII_DETECTION_ENABLED:true}
+
+  # Allowed operations (DML restrictions)
+  allowed_operations:
+    - SELECT
+
+  # Tables that are always blocked
+  blocked_tables: []
+
+# Retrieval Settings (for few-shot examples)
+retrieval:
+  method: hybrid  # bm25, semantic, hybrid
+  top_k: 5
+
+  # Hybrid weights (must sum to 1.0)
+  bm25_weight: 0.3
+  semantic_weight: 0.7
+
+  # Reranking
+  rerank_enabled: true
+  rerank_model: ${LLM_MODEL:gpt-4o-mini}
+
+# Agent Settings
+agent:
+  max_retries: 3
+  validate_before_execute: true
+  ask_on_ambiguity: true
+
+  # Human-in-the-loop
+  require_approval_for:
+    - DELETE
+    - UPDATE
+    - INSERT
+
+# Observability
+observability:
+  log_level: ${LOG_LEVEL:INFO}
+  trace_enabled: ${LANGCHAIN_TRACING_V2:false}
+
+  # Metrics
+  metrics_enabled: true
+  metrics_prefix: sql_agent

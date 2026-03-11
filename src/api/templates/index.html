@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root {
+      --bg: #faf9f7;
+      --surface: #ffffff;
+      --text: #1a1a1a;
+      --text-secondary: #6b6560;
+      --border: #e8e4df;
+      --accent: #c85d3a;
+      --accent-soft: #c85d3a18;
+      --code-bg: #f5f3f0;
+      --dot: #e0dcd7;
+      --radius: 6px;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      --font-mono: 'DM Mono', 'SF Mono', monospace;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font-mono);
+      font-weight: 400;
+      color: var(--text);
+      background: var(--bg);
+      background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+      background-size: 24px 24px;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 48px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: 2.4rem;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    header h1 em {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    header p {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* Input area */
+    .input-area {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 40px;
+      align-items: stretch;
+    }
+
+    .input-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .input-wrap::before {
+      content: '>';
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: 0.95rem;
+      pointer-events: none;
+    }
+
+    #question {
+      width: 100%;
+      padding: 14px 16px 14px 36px;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--text);
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    #question::placeholder {
+      color: #b5afa8;
+      font-weight: 300;
+    }
+
+    #question:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    #ask-btn {
+      padding: 14px 28px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--text);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    #ask-btn:hover { background: #333; }
+    #ask-btn:active { transform: scale(0.97); }
+
+    #ask-btn:disabled {
+      background: #b5afa8;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Loading */
+    .loading {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 32px 0;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .loading.active { display: flex; }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Results */
+    .results {
+      display: none;
+      animation: fadeUp 0.35s ease-out;
+    }
+
+    .results.active { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1.5px solid var(--border);
+      margin-bottom: 0;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .tab:hover { color: var(--text); }
+
+    .tab.active {
+      color: var(--text);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1.5px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .tab-panel {
+      display: none;
+      padding: 28px 0;
+    }
+
+    .tab-panel.active { display: block; }
+
+    /* Answer panel */
+    .answer-text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      background: var(--code-bg);
+      border-radius: 3px;
+    }
+
+    .meta-tag .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .sql-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sql-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      background: var(--code-bg);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .copy-btn {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 400;
+      color: var(--accent);
+      background: none;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+
+    .copy-btn:hover { opacity: 0.7; }
+
+    .sql-block pre {
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.65;
+      overflow-x: auto;
+      color: var(--text);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* Chart panel */
+    .chart-reasoning {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-bottom: 20px;
+      padding-left: 12px;
+      border-left: 2px solid var(--accent);
+    }
+
+    #chart-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      min-height: 300px;
+    }
+
+    #chart-container .vega-embed details { display: none; }
+
+    /* Error */
+    .error {
+      display: none;
+      padding: 16px 20px;
+      background: #fef2f0;
+      border: 1px solid #f0c4bb;
+      border-radius: var(--radius);
+      color: #8b3a2a;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      animation: fadeUp 0.35s ease-out;
+    }
+
+    .error.active { display: block; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state .prompt-icon {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      color: var(--border);
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    .empty-state p {
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .suggestion {
+      padding: 6px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .suggestion:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container { padding: 32px 16px 60px; }
+      header h1 { font-size: 1.8rem; }
+      .input-area { flex-direction: column; }
+      #ask-btn { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>SQL <em>Agent</em></h1>
+      <p>Ask questions about your data in plain English</p>
+    </header>
+
+    <div class="input-area">
+      <div class="input-wrap">
+        <input
+          type="text"
+          id="question"
+          placeholder="e.g. Show me revenue by genre"
+          autocomplete="off"
+          spellcheck="false"
+        >
+      </div>
+      <button id="ask-btn">Ask</button>
+    </div>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <span>Generating SQL and running query&hellip;</span>
+    </div>
+
+    <div class="error" id="error"></div>
+
+    <div class="results" id="results">
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-tab="answer">Answer</button>
+        <button class="tab" data-tab="chart" id="chart-tab" style="display:none">Chart</button>
+      </div>
+
+      <div class="tab-panel active" id="panel-answer">
+        <div class="answer-text" id="answer-text"></div>
+        <div class="meta-row" id="meta-row"></div>
+        <div class="sql-block" id="sql-block" style="display:none">
+          <div class="sql-header">
+            <span>Generated SQL</span>
+            <button class="copy-btn" id="copy-sql">Copy</button>
+          </div>
+          <pre id="sql-code"></pre>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="panel-chart">
+        <div class="chart-reasoning" id="chart-reasoning"></div>
+        <div id="chart-container"></div>
+      </div>
+    </div>
+
+    <div class="empty-state" id="empty-state">
+      <div class="prompt-icon">?</div>
+      <p>Ask a question about the Chinook database.</p>
+      <div class="suggestions">
+        <button class="suggestion">Top 5 genres by track count</button>
+        <button class="suggestion">Revenue by country</button>
+        <button class="suggestion">Longest albums</button>
+        <button class="suggestion">Customers per city</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questionInput = document.getElementById('question');
+    const askBtn = document.getElementById('ask-btn');
+    const loading = document.getElementById('loading');
+    const errorEl = document.getElementById('error');
+    const results = document.getElementById('results');
+    const emptyState = document.getElementById('empty-state');
+    const answerText = document.getElementById('answer-text');
+    const metaRow = document.getElementById('meta-row');
+    const sqlBlock = document.getElementById('sql-block');
+    const sqlCode = document.getElementById('sql-code');
+    const copySql = document.getElementById('copy-sql');
+    const chartTab = document.getElementById('chart-tab');
+    const chartReasoning = document.getElementById('chart-reasoning');
+    const chartContainer = document.getElementById('chart-container');
+
+    let currentSql = '';
+    let pendingChartSpec = null;  // Defer rendering until tab is visible
+
+    // Tab switching
+    document.getElementById('tabs').addEventListener('click', (e) => {
+      const btn = e.target.closest('.tab');
+      if (!btn) return;
+      const tabName = btn.dataset.tab;
+
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      document.getElementById('panel-' + tabName).classList.add('active');
+
+      // Render chart on first visit (container must be visible for width: "container")
+      if (tabName === 'chart' && pendingChartSpec) {
+        renderChart(pendingChartSpec);
+        pendingChartSpec = null;
+      }
+    });
+
+    // Suggestion clicks
+    document.querySelectorAll('.suggestion').forEach(btn => {
+      btn.addEventListener('click', () => {
+        questionInput.value = btn.textContent;
+        submitQuestion();
+      });
+    });
+
+    // Copy SQL
+    copySql.addEventListener('click', () => {
+      navigator.clipboard.writeText(currentSql).then(() => {
+        copySql.textContent = 'Copied';
+        setTimeout(() => { copySql.textContent = 'Copy'; }, 1500);
+      });
+    });
+
+    // Submit
+    questionInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !askBtn.disabled) submitQuestion();
+    });
+    askBtn.addEventListener('click', submitQuestion);
+
+    async function submitQuestion() {
+      const question = questionInput.value.trim();
+      if (!question) return;
+
+      // UI: loading state
+      askBtn.disabled = true;
+      loading.classList.add('active');
+      errorEl.classList.remove('active');
+      results.classList.remove('active');
+      emptyState.style.display = 'none';
+
+      try {
+        const resp = await fetch('/api/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question }),
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok || data.error) {
+          throw new Error(data.error || 'Request failed');
+        }
+
+        renderResult(data);
+      } catch (err) {
+        errorEl.textContent = err.message;
+        errorEl.classList.add('active');
+      } finally {
+        askBtn.disabled = false;
+        loading.classList.remove('active');
+      }
+    }
+
+    function renderResult(data) {
+      // Answer
+      answerText.textContent = data.response || 'No answer returned.';
+
+      // Meta tags
+      metaRow.innerHTML = '';
+      if (data.row_count != null) {
+        metaRow.innerHTML += `<span class="meta-tag"><span class="dot"></span>${data.row_count} rows</span>`;
+      }
+
+      // SQL
+      currentSql = data.sql || '';
+      if (currentSql) {
+        sqlCode.textContent = currentSql;
+        sqlBlock.style.display = 'block';
+      } else {
+        sqlBlock.style.display = 'none';
+      }
+
+      // Chart tab — defer rendering until visible (width: "container" needs it)
+      if (data.chart_spec) {
+        chartTab.style.display = '';
+        chartReasoning.textContent = data.chart_reasoning || '';
+        chartContainer.innerHTML = '';
+        pendingChartSpec = data.chart_spec;
+      } else {
+        chartTab.style.display = 'none';
+        pendingChartSpec = null;
+      }
+
+      // Reset to answer tab
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector('[data-tab="answer"]').classList.add('active');
+      document.getElementById('panel-answer').classList.add('active');
+
+      results.classList.add('active');
+    }
+
+    function renderChart(spec) {
+      chartContainer.innerHTML = '';
+      // Calculate width from visible container (padding: 24px each side)
+      const w = chartContainer.clientWidth - 48;
+      if (w > 100) spec.width = w;
+      vegaEmbed(chartContainer, spec, {
+        renderer: 'svg',
+        actions: { export: true, source: false, compiled: false, editor: false },
+        theme: 'quartz',
+      }).catch(err => {
+        chartContainer.innerHTML = `<span style="color:var(--text-secondary);font-size:0.85rem">Chart render error: ${err.message}</span>`;
+      });
+    }
+  </script>
+</body>
+</html>

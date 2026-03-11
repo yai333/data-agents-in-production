@@ -1,0 +1,44 @@
+Chinook Digital Media Store - Institutional Knowledge
+=====================================================
+
+Fiscal Calendar and Reporting Periods
+-------------------------------------
+The company operates on a calendar fiscal year (January 1 through December 31).
+Quarterly reporting follows the standard calendar quarters: Q1 = Jan-Mar,
+Q2 = Apr-Jun, Q3 = Jul-Sep, Q4 = Oct-Dec. When stakeholders say "last quarter"
+they mean the most recently completed calendar quarter, not a rolling 90-day
+window. Monthly reports are due by the 5th business day of the following month.
+
+Revenue Recognition and Pricing
+--------------------------------
+Revenue is recognized at the point of sale (invoice creation), not at payment
+collection. All prices are in USD regardless of customer location. There are two
+price tiers: standard tracks at $0.99 and premium/long-form content at $1.99.
+The invoice total field is the source of truth for revenue — do not recalculate
+from unit_price * quantity in invoice_line unless investigating discrepancies.
+
+Customer Definitions and Segmentation
+--------------------------------------
+A customer is classified as "active" if they have at least one invoice within
+the last 90 days. A "churned" customer has no invoice in the last 90 days.
+"High-value" customers are those in the top 10% by lifetime spending. The
+support_rep_id field links customers to their assigned sales support agent;
+customers without a support rep (NULL) are self-service web customers.
+
+Data Quality Notes
+------------------
+Invoice dates range from 2009 to 2013 in the original dataset. Some employee
+records use Canadian postal code format (e.g., "T2P 5M5") while customer
+postal codes vary by country. The billing_address fields on invoices are
+copied from the customer record at time of purchase and may not reflect
+current customer addresses. Employee birth_date and hire_date fields use
+TIMESTAMP WITHOUT TIME ZONE — treat them as date-only values.
+
+Known Quirks and Edge Cases
+----------------------------
+The playlist table contains both user-created playlists and system-generated
+playlists (e.g., "Music", "Movies", "TV Shows"). When counting "user playlists",
+exclude playlist names that match media type categories. The track.composer
+field uses "/" as a delimiter for multiple composers — do not split on commas.
+Some tracks have NULL composer values, which means the composer is unknown,
+not that the track is an instrumental.
