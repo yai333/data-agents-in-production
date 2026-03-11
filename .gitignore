@@ -63,9 +63,9 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Claude Code local settings
-.claude/*.local.md
-.claude/*.local.json
+# Claude Code
+CLAUDE.md
+.claude/
 
 # Secrets (never commit)
 *.pem
