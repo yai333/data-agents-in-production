@@ -70,6 +70,7 @@ CLAUDE.md
 # Secrets (never commit)
 *.pem
 *.key
+*.db
 credentials.json
 service-account.json
 
