@@ -92,3 +92,6 @@ data/sql_val.review.json
 .mcp.json
 /wandb
 unsloth_compiled_cache/
+tests/test_chapter_scripts.py
+tests/test_tool_parser.py
+tests/test_tool_parser.py

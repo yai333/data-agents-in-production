@@ -567,7 +567,7 @@ async def run_pipeline(
 
     try:
         # Load schema store for Layer 2
-        schema_store = SchemaStore.from_yaml(project_root / "config" / "chinook_schema.yaml")
+        schema_store = SchemaStore(project_root / "config" / "chinook_schema.json")
 
         # Layer 1: Table Usage
         if 1 in layers:
