@@ -1,6 +1,6 @@
 # Data Agents in Production
 
-Companion code for the book *Building Production Data Agents from Scratch: Design, Evaluate, and Scale Production AI Workflows for Data Analytics*.
+Companion code for the book *Building Production Data Agents from Scratch: Design, Evaluate, and Scale AI Workflows for Data Analytics*.
 
 The codebase uses **PostgreSQL** for the main agent chapters, ships a bundled **SQLite** Chinook file for the A2UI demo in chapter 3.7, and supports **OpenAI** or **Google Gemini** as the LLM provider.
 
